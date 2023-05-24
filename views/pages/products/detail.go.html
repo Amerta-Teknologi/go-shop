@@ -1,0 +1,21 @@
+{{define "pages/products/detail"}} {{template "layouts/base.start" .}}
+
+<div class="row g-5 product-detail">
+    <div class="col col-md-7">
+        <div class="card zoom-img">
+            <img loading="lazy" src="{{ .product.Image1Url }}" />
+        </div>
+    </div>
+    <div class="col col-md-5">
+        <div class="fsr-1 font-weight-bolder">VARIETY, THE CHILDREN'S CHARITY</div>
+        <h1 class="fsr-4 pt-2">{{ .product.Name }}</h1>
+        <div class="pt-3 fs-3">IDR {{ .product.Price }}</div>
+        <div class="fsr-1 pb-5">Tax included. Shipping calculated at checkout.</div>
+        <div class="d-grid d-block pb-5">
+            <a href="#" type="button" class="btn btn-primary btn-lg fs-4 p-3">Add to Cart</a>
+        </div>
+        <p>{{ .product.Description }}</p>
+    </div>
+</div>
+
+{{template "layouts/base.mid" .}} {{template "layouts/base.end" .}} {{end}}

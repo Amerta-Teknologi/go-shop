@@ -1,0 +1,6 @@
+{
+    "name":"required|min:3",
+    "description":"required",
+    "parent_id":"",
+    "slug":""
+}

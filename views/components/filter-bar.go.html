@@ -1,0 +1,93 @@
+{{define "components/filter-bar"}}
+<form>
+
+    {{if not .hideSearch}} 
+    <div>
+        <h1 class="fsr-4 mb-4 text-center d-block">Products</h1>
+        <div><input name="search" class="mc pt-3 pb-3 ps-4 pe-4 d-block" style="width: 35rem" type="text" placeholder="Keyword" value="{{.search}}" /></div>
+    </div>
+    {{end}}
+
+    <div class="row row-cols-1 row-cols-sm-2 mt-4 pt-5 mb-1" target="#">
+        <div class="col">
+            <div class="float-start me-5">Filter:</div>
+            <div class="dropdown float-start me-5">
+                <div class="dropdown-toggle pointer" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Availbility</div>
+                <div class="dropdown-menu" style="width: 200px">
+                    <div class="pt-2 pb-2 pe-4 ps-4 mt-0 clearfix">
+                        <div class="float-start fs-5"><span>0</span> Selected</div>
+                        <a href="/products/categories/gold-heart" class="float-end fs-5">Reset</a>
+                    </div>
+                    <hr class="dropdown-divider" />
+                    <div class="mb-3 fs-4 pt-2 pe-4 ps-4">
+                        {{$s := .selectedStocks}} {{range $index, $element := .stocks}}
+                        <div class="form-check pointer">
+                            <input {{if in $index $s}}checked{{end}} type="checkbox" name="quantity[]" class="form-check-input" value="{{$index}}" id="sort-{{$index}}" />
+                            <label class="form-check-label" for="sort-{{$index}}">{{$element}}</label>
+                        </div>
+                        {{end}}
+                    </div>
+                    <hr class="dropdown-divider" />
+                    <div class="mb-3 fs-4 pt-2 pe-4 ps-4">
+                        <input type="submit" class="ad-none btn btn-success" style="width: 100%" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown float-start">
+                <div class="dropdown-toggle pointer" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Price</div>
+                <div class="dropdown-menu" style="width: 300px">
+                    <div class="pt-2 pb-2 pe-4 ps-4 mt-0 clearfix">
+                        <div class="float-start fs-5">In IDR</div>
+                        <a href="/products/categories/gold-heart" class="float-end fs-5">Reset</a>
+                    </div>
+                    <hr class="dropdown-divider" />
+                    <div class="pt-2 pb-2 pe-4 ps-4 clearfix">
+                        {{$p := .selectedPrices}}
+                        <input type="text" name="price[]" value="{{if $p}}{{index $p 0}}{{end}}" style="width: calc(50% - 8px)" placeholder="From" class="form-control float-start fs-4 p-4 mb-2" />
+                        <input type="text" name="price[]" value="{{if $p}}{{index $p 1}}{{end}}" placeholder="To" class="form-control w-50 float-end fs-4 p-4 mb-2" />
+                    </div>
+                    <hr class="dropdown-divider" />
+                    <div class="mb-3 fs-4 pt-2 pb-2 pe-4 ps-4">
+                        <input type="submit" class="ad-none btn btn-success" style="width: 100%" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col align-self-end">
+            <div class="float-end">{{.pagination.Total}} Product{{if gt .pagination.Total 1}}s{{end}}</div>
+            <div class="dropdown float-end me-5">
+                <div class="dropdown-toggle pointer" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                    {{if .selectedOrder}} {{$string := (index .orders .selectedOrder)}}
+                    {{$string}}
+                    {{end}}
+                </div>
+                <div class="dropdown-menu" style="width: 200px">
+                    <div class="pt-2 pb-2 pe-4 ps-4 mt-0 clearfix">
+                        {{ $s := .selectedOrder}} {{range $index, $element := .orders}}
+                        <div class="form-check pointer fs-4">
+                            <input {{if eq $index $s}}checked{{end}} name="order" value="{{index $index}}" type="radio" class="form-check-input" id="order-{{$index}}" />
+                            <label class="form-check-label" for="order-{{$index}}">{{index $element}}</label>
+                        </div>
+                        {{end}}
+                    </div>
+                    <hr class="dropdown-divider" />
+                    <div class="mb-3 fs-4 pt-2 pe-4 ps-4">
+                        <input type="submit" class="ad-none btn btn-success" style="width: 100%" />
+                    </div>
+                </div>
+            </div>
+            <div class="float-end me-5">Sort:</div>
+        </div>
+    </div>
+    <div class="clearfix mt-3" target="#">
+        {{$s := .stocks}} {{range $index, $element := .selectedStocks}}
+        <div class="float-start filter">{{index $s $element}}</div>
+        {{end}} {{if .selectedPrices}} {{$p := .selectedPrices}} {{if ne (index $p 0) "" }}
+        <div class="float-start filter">{{if $p}}IDR {{index $p 0}}{{end}} {{if ne (index $p 1) "" }} - {{index $p 1}} {{else}} and higher {{end}}</div>
+        {{end}} {{end}}
+    </div>
+    <input type="hidden" name="page" value="{{.page}}" />
+</form>
+{{end}}

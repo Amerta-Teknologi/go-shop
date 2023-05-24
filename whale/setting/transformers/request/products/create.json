@@ -1,0 +1,19 @@
+{
+    "name":"required|min:3",
+    "product_category_id":"required|number",
+    "description":"",
+    "length":"",
+    "width":"",
+    "height":"",
+    "featured":"",
+    "sold_total":"",
+    "video_url":"",
+    "status_id":"required",
+    "image_1_url":"required",
+    "image_2_url":"",
+    "image_3_url":"",
+    "image_4_url":"",
+    "image_5_url":"",
+    "slug":"",
+    "price":""
+}

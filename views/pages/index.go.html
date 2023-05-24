@@ -1,0 +1,30 @@
+{{define "pages/index"}} {{template "layouts/base.start" .}}
+
+<div class="text-center mrb-6 heading">
+    <h1>Shop and Support Variety</h1>
+    <p>Here you can buy Gold Hearts, Variety merchandise and other branded items, the proceeds of which go towards helping the thousands of children and young people we support each year.</p>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 align-items-end mrb-2">
+    <div class="col">
+        <h2 class="m-0">Gold Heart</h2>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 products">
+    {{range $index, $element := .products}}
+    <article class="col mrb-2">
+        <a href="/products/{{ $element.Slug }}">
+            <div class="card mrb-1 zoom-img">
+                <img loading="lazy" src="{{ $element.Image1Url }}" />
+            </div>
+            <div class="title">{{ $element.Name }}</div>
+            <div>IDR {{ $element.Price }}</div>
+        </a>
+    </article>
+    {{end}}
+</div>
+
+<a href="/products?page=1&order=name+asc" type="button" class="btn btn-danger btn-lg mc d-block fs-4 mrt-2 mrb-1 p-3" style="width: 15rem">View all</a>
+
+{{template "layouts/base.mid" .}} {{template "layouts/base.end" .}} {{end}}

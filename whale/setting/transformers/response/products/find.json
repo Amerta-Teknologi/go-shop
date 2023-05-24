@@ -1,0 +1,41 @@
+{
+    "id":"int",
+    "name":"",
+    "product_category_id":"",
+    "description":"",
+    "length":"",
+    "width":"",
+    "height":"",
+    "is_featured":"",
+    "video_url":"",
+    "status_id":"",
+    "image_1_url":"",
+    "image_2_url":"",
+    "image_3_url":"",
+    "image_4_url":"",
+    "image_5_url":"",
+    "slug":"",
+    "price":"",
+    "quantity":"",
+    "belongs_to":{
+        "category":{
+            "table":"product_categories",
+            "fk":"product_category_id",
+            "columns":["id", "name", "slug"]
+        }
+    },
+    "filterable":{
+        "id":"int",
+        "user_id" : "int",
+        "status_id" : "int",    
+        "product_category_id" : "int",
+        "slug" : "string",
+        "name" : "string",
+        "description" : "string",
+        "created_at" : "timestamp",
+        "updated_at" : "timestamp",
+        "price": "beetwen",
+        "quantity": "boolean"
+    },
+    "searchable": ["name", "description"]
+}

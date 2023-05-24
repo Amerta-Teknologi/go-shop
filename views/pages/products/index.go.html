@@ -1,0 +1,54 @@
+{{define "pages/products/index"}} {{template "layouts/base.start" .}}
+
+{{template "components/filter-bar" .}}
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 products mt-3">
+    {{range $index, $element := .products}}
+    <article class="col mrb-2">
+        <a href="/products/{{ $element.Slug }}">
+            <div class="card mrb-1 zoom-img">
+                <img loading="lazy" src="{{ $element.Image1Url }}" />
+            </div>
+            <div class="title">{{ $element.Name }}</div>
+            <div>IDR {{ $element.Price }}</div>
+        </a>
+    </article>
+    {{end}}
+</div>
+
+{{if not (len .products)}}
+<div class="text-center border w-25 mc p-3 mt-5">No data</div>
+{{end}} {{if .pagination.LastPage }}
+<nav class="mrt-3">
+    <ul class="pagination pagination-lg justify-content-center">
+        {{if ne (sub .page 1) 0}}
+        <li class="page-item pointer">
+            <a class="page-link" onclick="previousPage()"> < </a>
+        </li>
+        {{end}}
+        <li class="page-item"><span class="page-link">{{.page}}</span></li>
+        {{if lt .page .pagination.LastPage}}
+        <li class="page-item pointer">
+            <a class="page-link pointer" onclick="nextPage()"> > </a>
+        </li>
+        {{end}}
+    </ul>
+</nav>
+{{end}} {{template "layouts/base.mid" .}}
+
+<script>
+    function previousPage() {
+        if (parseInt({{.page }}) - 1 > 0) {
+            $('[name="page"]').val(parseInt({{.page }}) - 1)
+            $('[name="page"]').parent().submit()
+        }
+    }
+    function nextPage() {
+        if (parseInt({{.page}}) <= {{.pagination.LastPage }}) {
+            $('[name="page"]').val(parseInt({{.page}}) + 1)
+            $('[name="page"]').parent().submit()
+        }
+    }
+</script>
+
+{{template "layouts/base.end" .}} {{end}}

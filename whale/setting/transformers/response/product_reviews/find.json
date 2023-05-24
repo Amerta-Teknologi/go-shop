@@ -1,0 +1,18 @@
+{
+    "user_id":"int",
+    "description":"text",
+    "rating":"int",
+    "created_at" : "timestamp",
+    "updated_at" : "timestamp",
+    "belongs_to":{
+        "user":{
+            "table":"users",
+            "fk":"user_id",
+            "columns":["id", "name"]
+        }
+    },
+    "filterable":{
+        "description" : "string",
+        "rating" : "int"
+    }
+}
