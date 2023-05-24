@@ -4,14 +4,14 @@
     {{if not .hideSearch}} 
     <div>
         <h1 class="fsr-4 mb-4 text-center d-block">Products</h1>
-        <div><input name="search" class="mc pt-3 pb-3 ps-4 pe-4 d-block" style="width: 35rem" type="text" placeholder="Keyword" value="{{.search}}" /></div>
+        <div><input name="search" class="mc d-block" style="padding: 1rem 2rem ;width: 35rem;max-width: 100%;" type="text" placeholder="Keyword" value="{{.search}}" /></div>
     </div>
     {{end}}
 
     <div class="row row-cols-1 row-cols-sm-2 mt-4 pt-5 mb-1" target="#">
         <div class="col">
-            <div class="float-start me-5">Filter:</div>
-            <div class="dropdown float-start me-5">
+            <div class="float-start me-5 d-none d-md-block">Filter:</div>
+            <div class="dropdown float-md-start me-5">
                 <div class="dropdown-toggle pointer" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Availbility</div>
                 <div class="dropdown-menu" style="width: 200px">
                     <div class="pt-2 pb-2 pe-4 ps-4 mt-0 clearfix">
@@ -29,14 +29,14 @@
                     </div>
                     <hr class="dropdown-divider" />
                     <div class="mb-3 fs-4 pt-2 pe-4 ps-4">
-                        <input type="submit" class="ad-none btn btn-success" style="width: 100%" />
+                        <input type="submit" class="ad-none btn btn-success w-100" />
                     </div>
                 </div>
             </div>
 
-            <div class="dropdown float-start">
+            <div class="dropdown float-md-start">
                 <div class="dropdown-toggle pointer" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Price</div>
-                <div class="dropdown-menu" style="width: 300px">
+                <div class="dropdown-menu" style="width: 250px">
                     <div class="pt-2 pb-2 pe-4 ps-4 mt-0 clearfix">
                         <div class="float-start fs-5">In IDR</div>
                         <a href="/products/categories/gold-heart" class="float-end fs-5">Reset</a>
@@ -55,9 +55,9 @@
             </div>
         </div>
 
-        <div class="col align-self-end">
-            <div class="float-end">{{.pagination.Total}} Product{{if gt .pagination.Total 1}}s{{end}}</div>
-            <div class="dropdown float-end me-5">
+        <div class="col">
+            <div class="float-end d-none d-md-block">{{.pagination.Total}} Product{{if gt .pagination.Total 1}}s{{end}}</div>
+            <div class="dropdown float-md-end float-sm-start me-5">
                 <div class="dropdown-toggle pointer" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                     {{if .selectedOrder}} {{$string := (index .orders .selectedOrder)}}
                     {{$string}}
@@ -78,7 +78,7 @@
                     </div>
                 </div>
             </div>
-            <div class="float-end me-5">Sort:</div>
+            <div class="float-end me-5 d-none d-md-block">Sort:</div>
         </div>
     </div>
     <div class="clearfix mt-3" target="#">

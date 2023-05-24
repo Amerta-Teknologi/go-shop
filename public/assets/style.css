@@ -23,7 +23,7 @@ header .container-lg img {
 
 header nav.navbar {
     padding-top: 0;
-    padding-bottom: 0;
+    padding-bottom: 1rem;
     border-bottom: 1px solid var(--bs-navbar-toggler-border-color);
 }
 
@@ -63,7 +63,8 @@ footer input[type=text] {
     background: none;
     border: 0.1rem solid rgba(255, 255, 255, .55);
     padding: 1.5rem;
-    width: 30rem;
+    max-width: 30rem;
+    min-width: 100% ;
 }
 
 .products .title {
