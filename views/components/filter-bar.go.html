@@ -11,7 +11,7 @@
     <div class="row row-cols-1 row-cols-sm-2 mt-4 pt-5 mb-1" target="#">
         <div class="col">
             <div class="float-start me-5 d-none d-md-block">Filter:</div>
-            <div class="dropdown float-md-start me-5">
+            <div class="dropdown float-sm-start me-5">
                 <div class="dropdown-toggle pointer" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Availbility</div>
                 <div class="dropdown-menu" style="width: 200px">
                     <div class="pt-2 pb-2 pe-4 ps-4 mt-0 clearfix">
@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <div class="dropdown float-md-start">
+            <div class="dropdown float-sm-start">
                 <div class="dropdown-toggle pointer" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Price</div>
                 <div class="dropdown-menu" style="width: 250px">
                     <div class="pt-2 pb-2 pe-4 ps-4 mt-0 clearfix">
@@ -57,7 +57,7 @@
 
         <div class="col">
             <div class="float-end d-none d-md-block">{{.pagination.Total}} Product{{if gt .pagination.Total 1}}s{{end}}</div>
-            <div class="dropdown float-md-end float-sm-start me-5">
+            <div class="dropdown float-sm-end float-xs-start me-5">
                 <div class="dropdown-toggle pointer" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                     {{if .selectedOrder}} {{$string := (index .orders .selectedOrder)}}
                     {{$string}}
