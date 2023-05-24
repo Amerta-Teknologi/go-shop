@@ -39,6 +39,10 @@ func (model *Product) FindAll(c *gin.Context) *ProductsResponse {
 		queries = queries + "slug=" + c.Param("product-slug") + "&"
 	}
 
+	if c.Query("page") == "" {
+		queries = queries + "page=1&"
+	}
+
 	if c.Query("per_page") == "" {
 		queries = queries + "per_page=12&"
 	}

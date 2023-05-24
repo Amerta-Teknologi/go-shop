@@ -13,9 +13,6 @@ type IndexController struct{}
 
 func (ctrl *IndexController) Get() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		queryParams := c.Request.URL.Query()
-		queryParams.Set("per_page", "8")
-
 		model := models.Product{}
 		resp := model.FindAll(c)
 
