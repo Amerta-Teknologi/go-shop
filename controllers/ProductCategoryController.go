@@ -44,6 +44,7 @@ func (ctrl *ProductCategoryController) GetFind() gin.HandlerFunc {
 		}
 
 		c.HTML(http.StatusOK, "pages/products/categories/detail", gin.H{
+			"webview":         utils.Webview,
 			"menus":           utils.Menus,
 			"productCategory": respPC.Data[0],
 			"products":        resp.Data,

@@ -7,6 +7,14 @@
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&amp;display=swap" rel="stylesheet" />
         <link href="/assets/bootstrap/bootstrap.min.css" rel="stylesheet" />
         <link href="/assets/style.css" rel="stylesheet" />
+
+        <style>
+            {{if .webview}}
+            header, footer {
+                display: none;
+            }
+            {{end}}
+        </style>
     </head>
 
     <body>

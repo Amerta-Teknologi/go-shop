@@ -17,6 +17,7 @@ func (ctrl *IndexController) Get() gin.HandlerFunc {
 		resp := model.FindAll(c)
 
 		c.HTML(http.StatusOK, "pages/index", gin.H{
+			"webview":  utils.Webview,
 			"menus":    utils.Menus,
 			"products": resp.Data,
 		})

@@ -43,6 +43,7 @@ func (ctrl *ProductController) GetFindAll() gin.HandlerFunc {
 		}
 
 		c.HTML(http.StatusOK, "pages/products/index", gin.H{
+			"webview":         utils.Webview,
 			"menus":           utils.Menus,
 			"productCategory": respPC.Data[0],
 			"products":        resp.Data,
@@ -66,6 +67,7 @@ func (ctrl *ProductController) GetFind() gin.HandlerFunc {
 		resp := model.FindAll(c)
 
 		c.HTML(http.StatusOK, "pages/products/detail", gin.H{
+			"webview": utils.Webview,
 			"menus":   utils.Menus,
 			"product": resp.Data[0],
 		})

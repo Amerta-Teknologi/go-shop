@@ -38,15 +38,15 @@
 
 <script>
     function previousPage() {
-        if (parseInt({{.page }}) - 1 > 0) {
-            $('[name="page"]').val(parseInt({{.page }}) - 1)
-            $('[name="page"]').parent().submit()
+        if (parseInt("{{.page }}") - 1 > 0) {
+            $('[name="page"]').val(parseInt("{{.page }}") - 1);
+            $('[name="page"]').parent().submit();
         }
     }
     function nextPage() {
-        if (parseInt({{.page}}) <= {{.pagination.LastPage }}) {
-            $('[name="page"]').val(parseInt({{.page}}) + 1)
-            $('[name="page"]').parent().submit()
+        if (parseInt("{{.page }}") <= parseInt("{{.pagination.LastPage }}")) {
+            $('[name="page"]').val(parseInt("{{.page }}") + 1);
+            $('[name="page"]').parent().submit();
         }
     }
 </script>

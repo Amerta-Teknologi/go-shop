@@ -6,12 +6,14 @@ import (
 	"strings"
 
 	controllers "github.com/amerta-teknologi/go-shop/controllers"
+	"github.com/amerta-teknologi/go-shop/middlewares"
 	utils "github.com/amerta-teknologi/go-shop/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	var group gin.IRoutes
 	r := gin.Default()
 
 	html := template.Must(template.New("").Delims("{{", "}}").Funcs(template.FuncMap{
@@ -30,15 +32,23 @@ func main() {
 	r.Static("/assets", "./public/assets")
 	r.Static("/images", "./public/images")
 
-	index := controllers.IndexController{}
-	r.GET("/", index.Get())
+	r.Use(middlewares.WebviewMiddleware())
 
-	product := controllers.ProductController{}
-	r.GET("/products", product.GetFindAll())
-	r.GET("/products/:product-slug", product.GetFind())
+	ctrl := controllers.IndexController{}
+	r.GET("", ctrl.Get()).Use(middlewares.WebviewMiddleware())
 
-	productCategory := controllers.ProductCategoryController{}
-	r.GET("/products/categories/:product-category-slug", productCategory.GetFind())
+	group = r.Group("/products")
+	{
+		product := controllers.ProductController{}
+		group.GET("", product.GetFindAll())
+		group.GET("/:product-slug", product.GetFind())
+	}
+
+	group = r.Group("")
+	{
+		ctrl := controllers.ProductCategoryController{}
+		group.GET("/products/categories/:product-category-slug", ctrl.GetFind())
+	}
 
 	r.Run("localhost:8080")
 }
