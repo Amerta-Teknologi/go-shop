@@ -4,9 +4,10 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Bootstrap demo</title>
-        <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&amp;display=swap" rel="stylesheet" />
-        <link href="/assets/bootstrap/bootstrap.min.css" rel="stylesheet" />
-        <link href="/assets/style.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/assets/font.css" />
+        <link rel="stylesheet" href="/assets/bootstrap/bootstrap.min.css" />
+        <link rel="stylesheet" href="/assets/style.css" />
+        <script src="/assets/feather.js"></script>
 
         <style>
             {{if .webview}}
@@ -24,7 +25,7 @@
                     <img loading="lazy" src="/images/logo.webp" alt="" />
                 </a>
             </div>
-            <nav class="navbar navbar-expand-lg mt-3 mt-lg-0 pt-lg-0 pb-4 pb-lg-0 ">
+            <nav class="navbar navbar-expand-lg mt-3 mt-lg-0 pt-lg-0 pb-4 pb-lg-0">
                 <div class="container-lg">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -33,22 +34,19 @@
                         <ul class="navbar-nav me-auto mt-3 mt-lg-0 pt-lg-0 pb-lg-2">
                             {{range $index, $element := .menus}}
                             <li class="nav-item">
-                                <a class="nav-link d-block d-lg-none fs-1 " style="padding-left: 0 !important;" href="{{$element.Url}}">{{$element.Name}}</a>
-                                <a class="nav-link d-none d-lg-block me-3" style="padding-left: 0 !important;" href="{{$element.Url}}">{{$element.Name}}</a>
+                                <a class="nav-link d-block d-lg-none fs-1" style="padding-left: 0 !important" href="{{$element.Url}}">{{$element.Name}}</a>
+                                <a class="nav-link d-none d-lg-block me-3" style="padding-left: 0 !important" href="{{$element.Url}}">{{$element.Name}}</a>
                             </li>
                             {{end}}
                         </ul>
                     </div>
                 </div>
-                <a class="d-block mc position-absolute d-block d-lg-none" style="top:3px; left: calc(50% - 5rem); width: 8rem;" href="/">
+                <a class="d-block mc position-absolute d-block d-lg-none" style="top: 3px; left: calc(50% - 5rem); width: 8rem" href="/">
                     <img class="w-100" loading="lazy" src="/images/logo.webp" alt="" />
                 </a>
             </nav>
         </header>
-        <div class="container-lg content mt-5 pt-md-5">
-{{end}}
-{{define "layouts/base.mid"}}
-        </div>
+        <div class="container-lg content mt-5 pt-md-5">{{end}} {{define "layouts/base.mid"}}</div>
         <footer>
             <div class="container-lg">
                 <div class="row row-cols-1 row-cols-sm-2">
@@ -77,9 +75,10 @@
         </footer>
         <script src="/assets/bootstrap/bootstrap.bundle.min.js"></script>
         <script src="/assets/jquery/jquery.min.js"></script>
-{{end}}
-
-{{define "layouts/base.end"}}
+        <script>
+            feather.replace();
+        </script>
+        {{end}} {{define "layouts/base.end"}}
     </body>
 </html>
 {{end}}

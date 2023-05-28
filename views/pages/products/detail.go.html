@@ -11,9 +11,13 @@
         <h1 class="fsr-3 pt-2">{{ .product.Name }}</h1>
         <div class="pt-3 fs-3">IDR {{ .product.Price }}</div>
         <div class="fsr-1 pb-5">Tax included. Shipping calculated at checkout.</div>
-        <div class="d-grid d-block pb-5">
-            <a href="#" type="button" class="btn btn-primary btn-lg fs-4 p-3">Add to Cart</a>
-        </div>
+        <form class="d-grid d-block pb-5" action="/carts" method="post" enctype="application/x-www-form-urlencoded">
+            <button type="submit" href="#" type="button" class="btn btn-primary btn-lg fs-4 p-3">Add to Cart</button>
+            <input type="hidden" name="product_slug" value="{{ .product.Slug }}">
+            <input type="hidden" name="product_id" value="{{ .product.Id }}">
+            <input type="hidden" name="user_id" value="1">
+            <input type="hidden" name="quantity" value="1">
+        </form>
         <p>{{ .product.Description }}</p>
     </div>
 </div>

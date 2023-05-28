@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -14,6 +15,18 @@ func Get(url string) *http.Response {
 
 	if err != nil {
 		fmt.Println("Request failed:", err)
+		return nil
+	}
+
+	return response
+}
+
+func Post(url string, contentType string, requestBody io.Reader) *http.Response {
+	// Send a GET request to the endpoint
+	response, err := http.Post(url, contentType, requestBody)
+
+	if err != nil {
+		fmt.Println("Request failed:", err, url, contentType, requestBody)
 		return nil
 	}
 

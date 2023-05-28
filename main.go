@@ -39,15 +39,22 @@ func main() {
 
 	group = r.Group("/products")
 	{
-		product := controllers.ProductController{}
-		group.GET("", product.GetFindAll())
-		group.GET("/:product-slug", product.GetFind())
+		ctrl := controllers.ProductController{}
+		group.GET("", ctrl.GetFindAll())
+		group.GET("/:product-slug", ctrl.GetFind())
 	}
 
-	group = r.Group("")
+	group = r.Group("/products/categories")
 	{
 		ctrl := controllers.ProductCategoryController{}
-		group.GET("/products/categories/:product-category-slug", ctrl.GetFind())
+		group.GET("/:product-category-slug", ctrl.GetFind())
+	}
+
+	group = r.Group("/carts")
+	{
+		ctrl := controllers.CartController{}
+		group.POST("", ctrl.Post())
+		group.GET("", ctrl.Get())
 	}
 
 	r.Run("localhost:8080")

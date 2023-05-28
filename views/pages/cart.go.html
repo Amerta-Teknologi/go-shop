@@ -1,0 +1,67 @@
+{{define "pages/carts"}} {{template "layouts/base.start" .}}
+
+<div class="row row-cols-1 row-cols-sm-2 align-items-end mb-4">
+    <div class="col">
+        <h2 class="m-0">Your Cart</h2>
+    </div>
+
+    <div class="col">
+        <a href="#" class="float-sm-end float-xs-start">Continue Shopping</a>
+    </div>
+</div>
+
+<div class="row carts">
+    <div class="col col-12 col-md-8">
+        <table class="w-100 table">
+            <thead>
+                <tr>
+                    <th colspan="2">Products</th>
+                    <th>
+                        <div class="row align-items-center d-md-flex d-none">
+                            <div class="col col-md-6"></div>
+                            <div class="col col-md-3">Price</div>
+                            <div class="col col-md-3">Qty</div>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range $index, $element := .carts}}
+                <tr>
+                    <td class="align-middle" width="1">
+                        <a href="#" class="p-2"><i data-feather="trash" style="color: black"></i></a>
+                    </td>
+                    <td class="align-middle" style="width: 8rem; min-width: 100%">
+                        <img class="w-100 zoom-img" src="{{$element.Product.Image1Url}}" alt="" />
+                    </td>
+                    <td class="align-middle">
+                        <div class="row row-cols-1 align-items-center">
+                            <div class="col col-md-6 fw-bold mt-3 mt-md-0">{{$element.Product.Name}}</div>
+                            <div class="col col-md-3">IDR {{$element.Product.Price}}</div>
+                            <div class="col col-md-3">
+                                <div class="input-group mb-3 mb-md-0 mt-3 mt-md-0">
+                                    <button class="btn btn-outline-secondary" type="button">-</button>
+                                    <input type="text" class="form-control text-center" style="max-width: 5rem" value="{{$element.Quantity}}" />
+                                    <button class="btn btn-outline-secondary" type="button">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+    <div class="col col-12 col-md-4">
+        <div class="card mt-5 ms-md-5">
+            <div class="card-body">
+                <h5 class="card-title pt-3">Subtotal</h5>
+                <p class="card-text fs-1">IDR 500.000</p>
+                <a href="#" class="btn btn-primary w-100 btn-danger btn-lg fs-3 mb-3">Checkout</a>
+            </div>
+        </div>
+        <p class="fs-5 mt-4 ms-md-5">Tax included. Shipping calculated at checkout.</p>
+    </div>
+</div>
+
+{{template "layouts/base.mid" .}} {{template "layouts/base.end" .}} {{end}}
