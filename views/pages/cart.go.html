@@ -44,6 +44,7 @@
                 <tr>
                     <td class="align-middle p-2" width="1">
                         <i data-delete="{{$element.Id}}" data-feather="trash" class="pointer"></i>
+                        <i data-feather="loader" class="pointer d-none rotate"></i>
                     </td>
                     <td class="align-middle" style="width: 8rem; min-width: 100%">
                         <img class="w-100 zoom-img" src="{{$element.Product.Image1Url}}" alt="" />
@@ -54,9 +55,9 @@
                             <div class="col col-md-3">IDR {{$element.Product.Price}}</div>
                             <div class="col col-md-3">
                                 <div class="input-group mb-3 mb-md-0 mt-3 mt-md-0" data-id="{{$element.Id}}">
-                                    <button data-subtract class="btn btn-outline-secondary" type="button">-</button>
-                                    <input data-quantity type="text" class="form-control text-center" style="max-width: 5rem" value="{{$element.Quantity}}" />
-                                    <button data-add class="btn btn-outline-secondary" type="button">+</button>
+                                    <button data-subtract class="btn btn-outline-secondary fs-3" type="button">-</button>
+                                    <input data-quantity type="text" class="form-control text-center fs-5" style="max-width: 5rem" value="{{$element.Quantity}}" />
+                                    <button data-add class="btn btn-outline-secondary fs-3" type="button">+</button>
                                 </div>
                             </div>
                         </div>
@@ -90,40 +91,52 @@
         $("#update-form").submit();
     }
 
+    lock = 0;
+
     $(function () {
         $("[data-subtract]").click(function () {
-            dataQty = $(this).parent().find("[data-quantity]");
+            dataQty = $(this).siblings("[data-quantity]");
             qty = parseInt(dataQty.val());
             if (qty > 1) {
-                qty--;
+                dataQty.val(--qty);
             }
-            dataQty.val(qty);
         });
         $("[data-add]").click(function () {
-            dataQty = $(this).parent().find("[data-quantity]");
+            dataQty = $(this).siblings("[data-quantity]");
             qty = parseInt(dataQty.val());
-            qty++;
-            dataQty.val(qty);
+            dataQty.val(++qty);
         });
         $("[data-delete]").click(function () {
             id = $(this).data("delete");
             tr = $(this).parent().parent();
 
-            $.ajax({
-                url: "/carts/" + id,
-                type: "DELETE",
-                success: function (result) {
-                    tr.remove();
-                    if (!$(".cart-table tbody tr").length) {
-                        location.reload();
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr);
-                    console.error(status);
-                    console.error(error);
-                },
-            });
+            $("[data-delete]").animate({ opacity: 0.5 }, 500);
+
+            if(!lock) {
+                lock = 1
+                $.ajax({
+                    url: "/carts/" + id,
+                    type: "DELETE",
+                    beforeSend: function (result) {
+                        tr.hide();
+                    },
+                    success: function (result) {
+                        tr.remove();
+                        if (!$(".cart-table tbody tr").length) {
+                            location.reload();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        tr.show();
+                        console.error(xhr);
+                        console.error(status);
+                        console.error(error);
+                    },
+                }).always(function() {
+                    lock = 0
+                    $("[data-delete]").animate({ opacity: 1 }, 500);
+                });
+            }
         });
     });
 </script>

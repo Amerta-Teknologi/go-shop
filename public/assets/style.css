@@ -9,11 +9,6 @@ body {
     font-size: 1.5rem;
 }
 
-header {
-}
-
-.container-lg {}
-
 header .container-lg img {
     width: 176px;
     margin: calc(2rem + 0.75rem);
@@ -56,18 +51,17 @@ footer a {
     font-size: 1.4rem;
 }
 
-footer input[type=text] {
+footer input[type="text"] {
     background: none;
-    border: 0.1rem solid rgba(255, 255, 255, .55);
+    border: 0.1rem solid rgba(255, 255, 255, 0.55);
     padding: 1.5rem;
     max-width: 50rem;
-    width: 100% ;
+    width: 100%;
 }
 
 .products .title {
     font-weight: bold;
 }
-
 
 .products article a {
     font-style: none;
@@ -85,7 +79,9 @@ footer input[type=text] {
     margin: auto;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     letter-spacing: 2px;
 }
 
@@ -136,7 +132,6 @@ h1, h2, h3 {
 .mrb-10 {
     margin-bottom: 10rem !important;
 }
-
 
 .mrt-1 {
     margin-top: 1rem !important;
@@ -217,8 +212,22 @@ h1, h2, h3 {
     transform: scale(1.05);
 }
 
-.pointer:hover, .pointer:hover * {
+.pointer:hover,
+.pointer:hover * {
     cursor: pointer !important;
+}
+
+.rotate {
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* fix */
