@@ -33,6 +33,25 @@ func Post(url string, contentType string, requestBody io.Reader) *http.Response 
 	return response
 }
 
+func Del(url string) *http.Response {
+	// Send a GET request to the endpoint
+	req, err := http.NewRequest("DELETE", url, nil)
+
+	if err != nil {
+		fmt.Println("Request failed:", err)
+		return nil
+	}
+
+	// Send the request using the default client
+	response, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Println("Error sending request:", err)
+		return nil
+	}
+
+	return response
+}
+
 func GetBody(response *http.Response, strt any) any {
 	defer response.Body.Close()
 

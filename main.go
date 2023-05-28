@@ -55,6 +55,7 @@ func main() {
 		ctrl := controllers.CartController{}
 		group.POST("", ctrl.Post())
 		group.GET("", ctrl.Get())
+		group.DELETE("/:id", ctrl.Del())
 	}
 
 	r.Run("localhost:8080")

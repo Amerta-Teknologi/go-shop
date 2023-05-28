@@ -1,4 +1,11 @@
-{{define "pages/carts"}} {{template "layouts/base.start" .}}
+{{define "pages/carts"}} {{template "layouts/base.start" .}} {{if not (len .carts)}}
+
+<div class="text-center w-50 mc p-3 mrt-8 mrb-10 pb-5">
+    <div class="fs-1">Your Cart is Empty</div>
+    <a href="/products?page=1&order=name+asc" class="">Continue Shopping</a>
+</div>
+
+{{else}}
 
 <div class="row row-cols-1 row-cols-sm-2 align-items-end mb-4">
     <div class="col">
@@ -6,13 +13,20 @@
     </div>
 
     <div class="col">
-        <a href="#" class="float-sm-end float-xs-start">Continue Shopping</a>
+        <a href="/products?page=1&order=name+asc" class="float-sm-end float-xs-start">Continue Shopping</a>
     </div>
 </div>
 
+<form id="delete-form" method="post" enctype="application/x-www-form-urlencoded"></form>
+
+<form id="update-form" method="post" enctype="application/x-www-form-urlencoded">
+    <input type="hidden" name="id" />
+    <input type="hidden" name="quantity" />
+</form>
+
 <div class="row carts">
     <div class="col col-12 col-md-8">
-        <table class="w-100 table">
+        <table class="w-100 table cart-table">
             <thead>
                 <tr>
                     <th colspan="2">Products</th>
@@ -28,8 +42,8 @@
             <tbody>
                 {{range $index, $element := .carts}}
                 <tr>
-                    <td class="align-middle" width="1">
-                        <a href="#" class="p-2"><i data-feather="trash" style="color: black"></i></a>
+                    <td class="align-middle p-2" width="1">
+                        <i data-delete="{{$element.Id}}" data-feather="trash" class="pointer"></i>
                     </td>
                     <td class="align-middle" style="width: 8rem; min-width: 100%">
                         <img class="w-100 zoom-img" src="{{$element.Product.Image1Url}}" alt="" />
@@ -39,10 +53,10 @@
                             <div class="col col-md-6 fw-bold mt-3 mt-md-0">{{$element.Product.Name}}</div>
                             <div class="col col-md-3">IDR {{$element.Product.Price}}</div>
                             <div class="col col-md-3">
-                                <div class="input-group mb-3 mb-md-0 mt-3 mt-md-0">
-                                    <button class="btn btn-outline-secondary" type="button">-</button>
-                                    <input type="text" class="form-control text-center" style="max-width: 5rem" value="{{$element.Quantity}}" />
-                                    <button class="btn btn-outline-secondary" type="button">+</button>
+                                <div class="input-group mb-3 mb-md-0 mt-3 mt-md-0" data-id="{{$element.Id}}">
+                                    <button data-subtract class="btn btn-outline-secondary" type="button">-</button>
+                                    <input data-quantity type="text" class="form-control text-center" style="max-width: 5rem" value="{{$element.Quantity}}" />
+                                    <button data-add class="btn btn-outline-secondary" type="button">+</button>
                                 </div>
                             </div>
                         </div>
@@ -64,4 +78,54 @@
     </div>
 </div>
 
-{{template "layouts/base.mid" .}} {{template "layouts/base.end" .}} {{end}}
+{{end}} {{template "layouts/base.mid" .}}
+
+<script>
+    function deleteCart(id) {
+        $("#delete-form").attr("action", "/carts/delete/" + id);
+        $("#delete-form").submit();
+    }
+    function addCart(id) {
+        $("#update-form").attr("action", "/carts/update/" + id);
+        $("#update-form").submit();
+    }
+
+    $(function () {
+        $("[data-subtract]").click(function () {
+            dataQty = $(this).parent().find("[data-quantity]");
+            qty = parseInt(dataQty.val());
+            if (qty > 1) {
+                qty--;
+            }
+            dataQty.val(qty);
+        });
+        $("[data-add]").click(function () {
+            dataQty = $(this).parent().find("[data-quantity]");
+            qty = parseInt(dataQty.val());
+            qty++;
+            dataQty.val(qty);
+        });
+        $("[data-delete]").click(function () {
+            id = $(this).data("delete");
+            tr = $(this).parent().parent();
+
+            $.ajax({
+                url: "/carts/" + id,
+                type: "DELETE",
+                success: function (result) {
+                    tr.remove();
+                    if (!$(".cart-table tbody tr").length) {
+                        location.reload();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr);
+                    console.error(status);
+                    console.error(error);
+                },
+            });
+        });
+    });
+</script>
+
+{{template "layouts/base.end" .}} {{end}}

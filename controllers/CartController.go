@@ -32,3 +32,11 @@ func (ctrl *CartController) Post() gin.HandlerFunc {
 		c.Redirect(http.StatusFound, "/carts")
 	}
 }
+
+func (ctrl *CartController) Del() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		model := models.Cart{}
+		resp := model.Del(c)
+		c.JSON(200, resp)
+	}
+}
