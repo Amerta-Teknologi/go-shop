@@ -44,6 +44,21 @@ func (model *Cart) Post(c *gin.Context) *CartResponse {
 	return body.(*CartResponse)
 }
 
+func (model *Cart) Put(c *gin.Context) *CartResponse {
+	// Read the request body
+	requestBody, err := ioutil.ReadAll(c.Request.Body)
+
+	if err != nil {
+		c.String(http.StatusInternalServerError, "Error reading request body")
+		return &CartResponse{}
+	}
+
+	response := Put("http://localhost:10081/api/v1/catalog/carts/"+c.Param("id"), "application/x-www-form-urlencoded", bytes.NewBuffer(requestBody))
+	body := GetBody(response, &CartResponse{})
+
+	return body.(*CartResponse)
+}
+
 func (model *Cart) Del(c *gin.Context) *CartResponse {
 	response := Del("http://localhost:10081/api/v1/catalog/carts/" + c.Param("id"))
 	body := GetBody(response, &CartResponse{})

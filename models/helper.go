@@ -33,8 +33,26 @@ func Post(url string, contentType string, requestBody io.Reader) *http.Response 
 	return response
 }
 
+func Put(url string, contentType string, requestBody io.Reader) *http.Response {
+	req, err := http.NewRequest("PUT", url, requestBody)
+
+	if err != nil {
+		fmt.Println("Request failed:", err)
+		return nil
+	}
+
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	response, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Println("Error sending request:", err)
+		return nil
+	}
+
+	return response
+}
+
 func Del(url string) *http.Response {
-	// Send a GET request to the endpoint
 	req, err := http.NewRequest("DELETE", url, nil)
 
 	if err != nil {
@@ -42,7 +60,6 @@ func Del(url string) *http.Response {
 		return nil
 	}
 
-	// Send the request using the default client
 	response, err := http.DefaultClient.Do(req)
 	if err != nil {
 		fmt.Println("Error sending request:", err)

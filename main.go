@@ -55,6 +55,7 @@ func main() {
 		ctrl := controllers.CartController{}
 		group.POST("", ctrl.Post())
 		group.GET("", ctrl.Get())
+		group.PUT("/:id", ctrl.Put())
 		group.DELETE("/:id", ctrl.Del())
 	}
 

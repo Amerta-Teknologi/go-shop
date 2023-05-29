@@ -33,6 +33,14 @@ func (ctrl *CartController) Post() gin.HandlerFunc {
 	}
 }
 
+func (ctrl *CartController) Put() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		model := models.Cart{}
+		resp := model.Put(c)
+		c.JSON(200, resp)
+	}
+}
+
 func (ctrl *CartController) Del() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		model := models.Cart{}

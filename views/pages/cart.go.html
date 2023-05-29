@@ -17,13 +17,6 @@
     </div>
 </div>
 
-<form id="delete-form" method="post" enctype="application/x-www-form-urlencoded"></form>
-
-<form id="update-form" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="id" />
-    <input type="hidden" name="quantity" />
-</form>
-
 <div class="row carts">
     <div class="col col-12 col-md-8">
         <table class="w-100 table cart-table">
@@ -82,38 +75,61 @@
 {{end}} {{template "layouts/base.mid" .}}
 
 <script>
-    function deleteCart(id) {
-        $("#delete-form").attr("action", "/carts/delete/" + id);
-        $("#delete-form").submit();
-    }
-    function addCart(id) {
-        $("#update-form").attr("action", "/carts/update/" + id);
-        $("#update-form").submit();
-    }
+    var lock = 0;
+    var timer = null;
+    var delay = 500; 
 
-    lock = 0;
+    function updateCart(qty, id) {
+        if (!lock) {
+            lock = 1;
+            $.ajax({
+                url: "/carts/" + id,
+                type: "PUT",
+                beforeSend: function (result) {},
+                success: function (result) {},
+                contentType: "application/x-www-form-urlencoded",
+                data: {
+                    quantity: qty,
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr, status, error);
+                },
+            }).always(function () {
+                lock = 0;
+            });
+        }
+    }
 
     $(function () {
         $("[data-subtract]").click(function () {
             dataQty = $(this).siblings("[data-quantity]");
             qty = parseInt(dataQty.val());
             if (qty > 1) {
-                dataQty.val(--qty);
+                dataQty.val(--qty).trigger("change");
             }
         });
+
         $("[data-add]").click(function () {
             dataQty = $(this).siblings("[data-quantity]");
             qty = parseInt(dataQty.val());
-            dataQty.val(++qty);
+            dataQty.val(++qty).trigger("change");
         });
+
+        $("[data-quantity]").on("change", function () {
+            clearTimeout(timer);
+            qty = $(this).val()
+            id = $(this).parent().data("id")
+            timer = setTimeout(updateCart, delay, qty, id);
+        });
+
         $("[data-delete]").click(function () {
             id = $(this).data("delete");
             tr = $(this).parent().parent();
 
             $("[data-delete]").animate({ opacity: 0.5 }, 500);
 
-            if(!lock) {
-                lock = 1
+            if (!lock) {
+                lock = 1;
                 $.ajax({
                     url: "/carts/" + id,
                     type: "DELETE",
@@ -128,12 +144,10 @@
                     },
                     error: function (xhr, status, error) {
                         tr.show();
-                        console.error(xhr);
-                        console.error(status);
-                        console.error(error);
+                        console.error(xhr, status, error);
                     },
-                }).always(function() {
-                    lock = 0
+                }).always(function () {
+                    lock = 0;
                     $("[data-delete]").animate({ opacity: 1 }, 500);
                 });
             }
