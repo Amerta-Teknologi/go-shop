@@ -19,52 +19,56 @@
 
 <div class="row carts">
     <div class="col col-12 col-md-8">
-        <table class="w-100 table cart-table">
-            <thead>
-                <tr>
-                    <th colspan="2">Products</th>
-                    <th>
-                        <div class="row align-items-center d-md-flex d-none">
-                            <div class="col col-md-6"></div>
-                            <div class="col col-md-3">Price</div>
-                            <div class="col col-md-3">Qty</div>
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {{range $index, $element := .carts}}
-                <tr>
-                    <td class="align-middle p-2" width="1">
-                        <i data-delete="{{$element.Id}}" data-feather="trash" class="pointer"></i>
-                        <i data-feather="loader" class="pointer d-none rotate"></i>
-                    </td>
-                    <td class="align-middle" style="width: 8rem; min-width: 100%">
-                        <img class="w-100 zoom-img" src="{{$element.Product.Image1Url}}" alt="" />
-                    </td>
-                    <td class="align-middle">
-                        <div class="row row-cols-1 align-items-center">
-                            <div class="col col-md-6 fw-bold mt-3 mt-md-0">{{$element.Product.Name}}</div>
-                            <div class="col col-md-3">IDR {{$element.Product.Price}}</div>
-                            <div class="col col-md-3">
-                                <div class="input-group mb-3 mb-md-0 mt-3 mt-md-0" data-id="{{$element.Id}}">
-                                    <button data-subtract class="btn btn-outline-secondary fs-3" type="button">-</button>
-                                    <input data-quantity type="text" class="form-control text-center fs-5" style="max-width: 5rem" value="{{$element.Quantity}}" />
-                                    <button data-add class="btn btn-outline-secondary fs-3" type="button">+</button>
+        <form id="form-cart">
+            <input name="user_id" type="hidden" value="1" />
+            <table class="w-100 table cart-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">Products</th>
+                        <th>
+                            <div class="row align-items-center d-md-flex d-none">
+                                <div class="col col-md-6"></div>
+                                <div class="col col-md-3">Price</div>
+                                <div class="col col-md-3">Qty</div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range $index, $element := .carts}}
+                    <tr>
+                        <td class="align-middle p-2" width="1">
+                            <i data-delete="{{$element.Id}}" data-feather="trash" class="pointer"></i>
+                            <i data-feather="loader" class="pointer d-none rotate"></i>
+                        </td>
+                        <td class="align-middle" style="width: 8rem; min-width: 100%">
+                            <img class="w-100 zoom-img" src="{{$element.Product.Image1Url}}" alt="" />
+                        </td>
+                        <td class="align-middle">
+                            <div class="row row-cols-1 align-items-center">
+                                <div class="col col-md-6 fw-bold mt-3 mt-md-0">{{$element.Product.Name}}</div>
+                                <div class="col col-md-3">IDR {{$element.Product.Price}}</div>
+                                <div class="col col-md-3">
+                                    <div class="input-group mb-3 mb-md-0 mt-3 mt-md-0" data-id="{{$element.Id}}">
+                                        <button data-subtract class="btn btn-outline-secondary fs-3" type="button">-</button>
+                                        <input name="quantities[]" data-quantity type="text" class="form-control text-center fs-5" style="max-width: 5rem" value="{{$element.Quantity}}" />
+                                        <input name="ids[]" type="hidden" value="{{$element.Id}}" />
+                                        <button data-add class="btn btn-outline-secondary fs-3" type="button">+</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-                {{end}}
-            </tbody>
-        </table>
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </form>
     </div>
     <div class="col col-12 col-md-4">
         <div class="card mt-5 ms-md-5">
             <div class="card-body">
                 <h5 class="card-title pt-3">Subtotal</h5>
-                <p class="card-text fs-1">IDR 500.000</p>
+                <p class="card-text fs-1">IDR <span data-total>{{.summary.Total}}</span></p>
                 <a href="#" class="btn btn-primary w-100 btn-danger btn-lg fs-3 mb-3">Checkout</a>
             </div>
         </div>
@@ -77,26 +81,29 @@
 <script>
     var lock = 0;
     var timer = null;
-    var delay = 500; 
+    var delay = 500;
 
     function updateCart(qty, id) {
         if (!lock) {
             lock = 1;
+            var formData = $("#form-cart").serialize();
+
             $.ajax({
                 url: "/carts/" + id,
                 type: "PUT",
-                beforeSend: function (result) {},
-                success: function (result) {},
                 contentType: "application/x-www-form-urlencoded",
-                data: {
-                    quantity: qty,
+                data: formData,
+                beforeSend: function (result) {},
+                success: function (result) {
+                    $("[data-total]").html(result.summary.total);
                 },
                 error: function (xhr, status, error) {
                     console.error(xhr, status, error);
                 },
-            }).always(function () {
-                lock = 0;
-            });
+                complete: function (xhr, status) {
+                    lock = 0;
+                },
+            })
         }
     }
 
@@ -117,8 +124,8 @@
 
         $("[data-quantity]").on("change", function () {
             clearTimeout(timer);
-            qty = $(this).val()
-            id = $(this).parent().data("id")
+            qty = $(this).val();
+            id = $(this).parent().data("id");
             timer = setTimeout(updateCart, delay, qty, id);
         });
 
@@ -130,8 +137,9 @@
 
             if (!lock) {
                 lock = 1;
+                user_id = 1;
                 $.ajax({
-                    url: "/carts/" + id,
+                    url: "/carts/" + user_id + "/" + id,
                     type: "DELETE",
                     beforeSend: function (result) {
                         tr.hide();
@@ -146,9 +154,10 @@
                         tr.show();
                         console.error(xhr, status, error);
                     },
-                }).always(function () {
-                    lock = 0;
-                    $("[data-delete]").animate({ opacity: 1 }, 500);
+                    complete: function (xhr, status) {
+                        lock = 0;
+                        $("[data-delete]").animate({ opacity: 1 }, 500);
+                    },
                 });
             }
         });

@@ -20,6 +20,7 @@ func (ctrl *CartController) Get() gin.HandlerFunc {
 			"webview": utils.Webview,
 			"menus":   utils.Menus,
 			"carts":   resp.Data,
+			"summary": resp.Summary,
 		})
 	}
 }

@@ -56,7 +56,7 @@ func main() {
 		group.POST("", ctrl.Post())
 		group.GET("", ctrl.Get())
 		group.PUT("/:id", ctrl.Put())
-		group.DELETE("/:id", ctrl.Del())
+		group.DELETE("/:userId/:id", ctrl.Del())
 	}
 
 	r.Run("localhost:8080")

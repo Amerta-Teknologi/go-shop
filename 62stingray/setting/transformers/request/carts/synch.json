@@ -1,0 +1,9 @@
+{
+    "ids":"",
+    "quantities":"",
+    "user_id":"",
+    "setting":{
+        "quantity": "quantity",
+        "user_id": "user_id"
+    }
+}
