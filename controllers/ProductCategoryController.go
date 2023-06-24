@@ -58,6 +58,7 @@ func (ctrl *ProductCategoryController) GetFind() gin.HandlerFunc {
 			"selectedOrder":   c.Query("order"),
 			"selectedPrices":  c.QueryArray("price[]"),
 			"hideSearch":      true,
+			"userData":        c.MustGet("user.data"),
 		})
 	}
 }

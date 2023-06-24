@@ -1,0 +1,7 @@
+#run go-shop
+echo "killing port 8080"
+sudo kill -9 $(sudo lsof -t -i:8080)
+echo "build go-shop"
+go build main.go
+echo "running go shop"
+nohup ./main &

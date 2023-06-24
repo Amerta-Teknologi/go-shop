@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/amerta-teknologi/go-shop/models"
@@ -16,10 +17,13 @@ func (ctrl *IndexController) Get() gin.HandlerFunc {
 		model := models.Product{}
 		resp := model.FindAll(c)
 
+		fmt.Println(c.MustGet("user.data"))
+
 		c.HTML(http.StatusOK, "pages/index", gin.H{
 			"webview":  utils.Webview,
 			"menus":    utils.Menus,
 			"products": resp.Data,
+			"userData": c.MustGet("user.data"),
 		})
 	}
 }

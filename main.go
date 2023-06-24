@@ -10,11 +10,17 @@ import (
 	utils "github.com/amerta-teknologi/go-shop/utils"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 )
 
 func main() {
 	var group gin.IRoutes
 	r := gin.Default()
+
+	store := cookie.NewStore([]byte("secret-key")) // Replace "secret-key" with your own secret key
+	r.Use(sessions.Sessions("session-name", store))
 
 	html := template.Must(template.New("").Delims("{{", "}}").Funcs(template.FuncMap{
 		"nl2br":   nl2br,
@@ -32,7 +38,7 @@ func main() {
 	r.Static("/assets", "./public/assets")
 	r.Static("/images", "./public/images")
 
-	r.Use(middlewares.WebviewMiddleware())
+	r.Use(middlewares.WebviewMiddleware(), middlewares.SessionMiddleware())
 
 	ctrl := controllers.IndexController{}
 	r.GET("", ctrl.Get()).Use(middlewares.WebviewMiddleware())
@@ -57,6 +63,14 @@ func main() {
 		group.GET("", ctrl.Get())
 		group.PUT("/:id", ctrl.Put())
 		group.DELETE("/:userId/:id", ctrl.Del())
+	}
+
+	group = r.Group("/auth")
+	{
+		ctrl := controllers.AuthController{}
+		group.POST("/sign-in", ctrl.SignIn())
+		group.GET("/sign-out", ctrl.SignOut())
+		group.GET("", ctrl.Get())
 	}
 
 	r.Run("localhost:8080")

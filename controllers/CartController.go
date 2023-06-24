@@ -17,10 +17,11 @@ func (ctrl *CartController) Get() gin.HandlerFunc {
 		resp := model.FindAll(c)
 
 		c.HTML(http.StatusOK, "pages/carts", gin.H{
-			"webview": utils.Webview,
-			"menus":   utils.Menus,
-			"carts":   resp.Data,
-			"summary": resp.Summary,
+			"webview":  utils.Webview,
+			"menus":    utils.Menus,
+			"carts":    resp.Data,
+			"summary":  resp.Summary,
+			"userData": c.MustGet("user.data"),
 		})
 	}
 }

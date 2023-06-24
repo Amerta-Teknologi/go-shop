@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,7 +36,10 @@ type CartResponse struct {
 }
 
 func (model *Cart) FindAll(c *gin.Context) *CartsResponse {
-	response := Get("http://localhost:10082/api/v1/carts")
+	userData, _ := c.Get("user.data")
+	user, _ := userData.(User)
+
+	response := Get("http://localhost:10082/api/v1/carts?user_id=" + strconv.Itoa(user.Id))
 	body := GetBody(response, &CartsResponse{})
 
 	return body.(*CartsResponse)
@@ -49,6 +53,11 @@ func (model *Cart) Post(c *gin.Context) *CartResponse {
 		c.String(http.StatusInternalServerError, "Error reading request body")
 		return &CartResponse{}
 	}
+
+	userData, _ := c.Get("user.data")
+	user, _ := userData.(User)
+
+	requestBody = []byte(string(requestBody) + "&user_id=" + strconv.Itoa(user.Id))
 
 	response := Post("http://localhost:10082/api/v1/carts", "application/x-www-form-urlencoded", bytes.NewBuffer(requestBody))
 	body := GetBody(response, &CartResponse{})
@@ -65,6 +74,11 @@ func (model *Cart) Put(c *gin.Context) *CartsResponse {
 		return &CartsResponse{}
 	}
 
+	userData, _ := c.Get("user.data")
+	user, _ := userData.(User)
+
+	requestBody = []byte(string(requestBody) + "&user_id=" + strconv.Itoa(user.Id))
+
 	response := Put("http://localhost:10082/api/v1/carts", "application/x-www-form-urlencoded", bytes.NewBuffer(requestBody))
 	body := GetBody(response, &CartsResponse{})
 
@@ -72,7 +86,10 @@ func (model *Cart) Put(c *gin.Context) *CartsResponse {
 }
 
 func (model *Cart) Del(c *gin.Context) *CartResponse {
-	response := Del("http://localhost:10082/api/v1/carts/" + c.Param("userId") + "/" + c.Param("id"))
+	userData, _ := c.Get("user.data")
+	user, _ := userData.(User)
+
+	response := Del("http://localhost:10082/api/v1/carts/" + strconv.Itoa(user.Id) + "/" + c.Param("id"))
 	body := GetBody(response, &CartResponse{})
 
 	return body.(*CartResponse)

@@ -56,6 +56,7 @@ func (ctrl *ProductController) GetFindAll() gin.HandlerFunc {
 			"selectedStocks":  c.QueryArray("quantity[]"),
 			"selectedOrder":   c.Query("order"),
 			"selectedPrices":  c.QueryArray("price[]"),
+			"userData":        c.MustGet("user.data"),
 		})
 	}
 }
@@ -67,9 +68,10 @@ func (ctrl *ProductController) GetFind() gin.HandlerFunc {
 		resp := model.FindAll(c)
 
 		c.HTML(http.StatusOK, "pages/products/detail", gin.H{
-			"webview": utils.Webview,
-			"menus":   utils.Menus,
-			"product": resp.Data[0],
+			"webview":  utils.Webview,
+			"menus":    utils.Menus,
+			"product":  resp.Data[0],
+			"userData": c.MustGet("user.data"),
 		})
 	}
 }
